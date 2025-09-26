@@ -148,4 +148,4 @@ MIT
 
 ---
 
-Inspired by [bugst/go-serial](https://github.com/bugst/go-serial).
+Powered by [bugst/go-serial](https://github.com/bugst/go-serial).
