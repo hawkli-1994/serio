@@ -12,6 +12,7 @@
 - **Modern configuration struct** — Easy, readable config.
 - **Cross-platform** — Works on Linux, Windows, macOS, ARM.
 - **Automatic resource management** — Safe, defer-friendly.
+- **Timeout control** — Granular control over read/write timeouts with SetWriteTimeout and SetDeadline.
 - **Event-driven (future)** — Ready for async data/error callbacks.
 
 ## Quick Start
@@ -80,6 +81,24 @@ go io.Copy(port, os.Stdin)
 go io.Copy(os.Stdout, port)
 ```
 
+## Timeout control
+
+The library provides granular timeout control for serial operations:
+
+```go
+// Set a specific timeout for write operations
+port.SetWriteTimeout(2 * time.Second)
+
+// Set a deadline for both read and write operations
+port.SetDeadline(time.Now().Add(5 * time.Second))
+
+// Disable timeout for write operations
+port.SetWriteTimeout(0)
+
+// Remove deadline
+port.SetDeadline(time.Time{})
+```
+
 ## API
 
 ### Open
@@ -95,6 +114,8 @@ type Port struct { ... }
 func (p *Port) Read(b []byte) (int, error)
 func (p *Port) Write(b []byte) (int, error)
 func (p *Port) Close() error
+func (p *Port) SetWriteTimeout(t time.Duration) error
+func (p *Port) SetDeadline(t time.Time) error
 ```
 
 ### Config

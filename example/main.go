@@ -6,7 +6,7 @@ import (
     "log"
     "time"
 
-    "github.com/serialx/serialx"
+    "github.com/hawkli-1994/serio"
 )
 
 func main() {
@@ -14,22 +14,28 @@ func main() {
     defer cancel()
 
     // 枚举端口
-    ports, _ := serialx.ListPorts()
+    ports, _ := serio.ListPorts()
     fmt.Println("Available ports:", ports)
 
     // 打开串口
-    port, err := serialx.Open(ctx, serialx.Config{
+    port, err := serio.Open(ctx, serio.Config{
         Name:     "/dev/ttyUSB0",
         Baud:     115200,
         DataBits: 8,
         StopBits: 1,
-        Parity:   serialx.None,
+        Parity:   serio.None,
         Timeout:  time.Second * 3,
     })
     if err != nil {
         log.Fatal("Open error:", err)
     }
     defer port.Close()
+
+    // 设置写超时
+    port.SetWriteTimeout(2 * time.Second)
+    
+    // 设置读写截止时间
+    port.SetDeadline(time.Now().Add(5 * time.Second))
 
     // 写数据
     _, err = port.Write([]byte("hello serial"))
@@ -39,19 +45,11 @@ func main() {
 
     // 读数据
     buf := make([]byte, 128)
-    n, err := port.ReadWithContext(ctx, buf)
+    n, err := port.Read(buf)
     if err != nil {
         log.Fatal("Read error:", err)
     }
     fmt.Printf("Received: %s\n", buf[:n])
-
-    // 异步事件监听
-    port.OnData(func(data []byte) {
-        fmt.Printf("Async Received: %x\n", data)
-    })
-    port.OnError(func(err error) {
-        log.Printf("Serial error: %v", err)
-    })
 
     // 保持主线程
     select {}
