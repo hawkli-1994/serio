@@ -3,6 +3,12 @@
 > 🌟 Modern, idiomatic Go serial port library.  
 > Effortless, context-aware, stream-friendly serial communication, powered by [bugst/go-serial](https://github.com/bugst/go-serial).
 
+[![Go](https://github.com/hawkli-1994/serio/actions/workflows/go.yml/badge.svg)](https://github.com/hawkli-1994/serio/actions/workflows/go.yml)
+[![GitHub Pages](https://github.com/hawkli-1994/serio/actions/workflows/pages.yml/badge.svg)](https://github.com/hawkli-1994/serio/actions/workflows/pages.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/hawkli-1994/serio)](https://goreportcard.com/report/github.com/hawkli-1994/serio)
+[![GoDoc](https://godoc.org/github.com/hawkli-1994/serio?status.svg)](https://godoc.org/github.com/hawkli-1994/serio)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **Repository:** [github.com/hawkli-1994/serio](https://github.com/hawkli-1994/serio)
 
 ## Features
@@ -14,6 +20,11 @@
 - **Automatic resource management** — Safe, defer-friendly.
 - **Timeout control** — Granular control over read/write timeouts with SetWriteTimeout and SetDeadline.
 - **Event-driven (future)** — Ready for async data/error callbacks.
+
+## Documentation
+
+- [API Reference](docs/api.md)
+- [GitHub Pages](https://hawkli-1994.github.io/serio)
 
 ## Quick Start
 

@@ -1,0 +1,4 @@
+theme: jekyll-theme-cayman
+title: serio
+description: Modern, idiomatic Go serial port library
+show_downloads: true
