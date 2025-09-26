@@ -13,13 +13,12 @@
 
 ## Features
 
-- **io.ReadWriteCloser interface** — Use Go's standard IO tools (`io.Copy`, `bufio`, etc.)
-- **Context support** — Open, read, write operations support context for timeout/cancel.
-- **Modern configuration struct** — Easy, readable config.
-- **Cross-platform** — Works on Linux, Windows, macOS, ARM.
-- **Automatic resource management** — Safe, defer-friendly.
-- **Timeout control** — Granular control over read/write timeouts with SetWriteTimeout and SetDeadline.
-- **Event-driven (future)** — Ready for async data/error callbacks.
+- **io.ReadWriteCloser interface** — Use Go's standard IO tools (`io.Copy`, `bufio`, etc.`)
+- **Context support** — Open, read, write operations support context for timeout/cancel
+- **Modern configuration struct** — Easy, readable config
+- **Cross-platform** — Supports Linux, Windows, and macOS on both x86 and ARM architectures
+- **Automatic resource management** — Safe, defer-friendly
+- **Timeout control** — Granular control over read/write timeouts with `SetWriteTimeout` and `SetDeadline`
 
 ## Documentation
 
@@ -71,7 +70,62 @@ func main() {
 }
 ```
 
-## List available ports
+## API Reference
+
+### Opening a Port
+
+To open a serial port, use the `Open` function with a context and configuration:
+
+```go
+port, err := serio.Open(ctx, serio.Config{
+    Name:     "/dev/ttyUSB0",  // Port name
+    Baud:     115200,          // Baud rate
+    DataBits: 8,               // Data bits
+    StopBits: 1,               // Stop bits
+    Parity:   serio.None,      // Parity
+    Timeout:  time.Second * 2, // Timeout
+})
+```
+
+### Reading and Writing
+
+The port implements `io.ReadWriteCloser`, so you can use standard Go IO operations:
+
+```go
+// Writing
+n, err := port.Write([]byte("hello"))
+
+// Reading
+buf := make([]byte, 128)
+n, err := port.Read(buf)
+```
+
+### Streaming Data
+
+You can easily stream data using Go's `io.Copy`:
+
+```go
+// Copy stdin to serial port
+go io.Copy(port, os.Stdin)
+// Copy serial data to stdout
+go io.Copy(os.Stdout, port)
+```
+
+### Timeout Control
+
+serio provides granular timeout control:
+
+```go
+// Set a specific timeout for write operations
+port.SetWriteTimeout(2 * time.Second)
+
+// Set a deadline for both read and write operations
+port.SetDeadline(time.Now().Add(5 * time.Second))
+```
+
+### Listing Ports
+
+To get a list of available serial ports:
 
 ```go
 ports, err := serio.ListPorts()
@@ -83,68 +137,9 @@ for _, name := range ports {
 }
 ```
 
-## Use with io.Copy (streaming data)
-
-```go
-// Copy stdin to serial port
-go io.Copy(port, os.Stdin)
-// Copy serial data to stdout
-go io.Copy(os.Stdout, port)
-```
-
-## Timeout control
-
-The library provides granular timeout control for serial operations:
-
-```go
-// Set a specific timeout for write operations
-port.SetWriteTimeout(2 * time.Second)
-
-// Set a deadline for both read and write operations
-port.SetDeadline(time.Now().Add(5 * time.Second))
-
-// Disable timeout for write operations
-port.SetWriteTimeout(0)
-
-// Remove deadline
-port.SetDeadline(time.Time{})
-```
-
-## API
-
-### Open
-
-```go
-func Open(ctx context.Context, cfg Config) (*Port, error)
-```
-
-### Port (implements io.ReadWriteCloser)
-
-```go
-type Port struct { ... }
-func (p *Port) Read(b []byte) (int, error)
-func (p *Port) Write(b []byte) (int, error)
-func (p *Port) Close() error
-func (p *Port) SetWriteTimeout(t time.Duration) error
-func (p *Port) SetDeadline(t time.Time) error
-```
-
-### Config
-
-```go
-type Config struct {
-    Name     string
-    Baud     int
-    DataBits int
-    StopBits int
-    Parity   Parity
-    Timeout  time.Duration
-}
-```
-
 ## License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/hawkli-1994/serio/blob/main/LICENSE) file for details.
 
 ---
 

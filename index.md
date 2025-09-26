@@ -9,11 +9,11 @@ serio is a modern, idiomatic Go library for serial port communication. It provid
 ## Features
 
 - **io.ReadWriteCloser interface** — Use Go's standard IO tools (`io.Copy`, `bufio`, etc.)
-- **Context support** — Open, read, write operations support context for timeout/cancel.
-- **Modern configuration struct** — Easy, readable config.
-- **Cross-platform** — Works on Linux, Windows, macOS, ARM.
-- **Automatic resource management** — Safe, defer-friendly.
-- **Timeout control** — Granular control over read/write timeouts with `SetWriteTimeout` and `SetDeadline`.
+- **Context support** — Open, read, write operations support context for timeout/cancel
+- **Modern configuration struct** — Easy, readable config
+- **Cross-platform** — Supports Linux, Windows, and macOS on both x86 and ARM architectures
+- **Automatic resource management** — Safe, defer-friendly
+- **Timeout control** — Granular control over read/write timeouts with `SetWriteTimeout` and `SetDeadline`
 
 ## Installation
 
