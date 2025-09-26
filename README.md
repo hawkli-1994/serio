@@ -4,7 +4,7 @@
 > Effortless, context-aware, stream-friendly serial communication, powered by [bugst/go-serial](https://github.com/bugst/go-serial).
 
 [![Go](https://github.com/hawkli-1994/serio/actions/workflows/go.yml/badge.svg)](https://github.com/hawkli-1994/serio/actions/workflows/go.yml)
-[![GitHub Pages](https://github.com/hawkli-1994/serio/actions/workflows/pages.yml/badge.svg)](https://github.com/hawkli-1994/serio/actions/workflows/pages.yml)
+[![GitHub Pages](https://github.com/hawkli-1994/serio/actions/workflows/jekyll-gh-pages.yml/badge.svg)](https://github.com/hawkli-1994/serio/actions/workflows/jekyll-gh-pages.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hawkli-1994/serio)](https://goreportcard.com/report/github.com/hawkli-1994/serio)
 [![GoDoc](https://godoc.org/github.com/hawkli-1994/serio?status.svg)](https://godoc.org/github.com/hawkli-1994/serio)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
