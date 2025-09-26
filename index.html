@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>serio - Modern Go Serial Port Library</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .badge {
+            height: 20px;
+        }
+        .content {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        code {
+            background-color: #f1f2f6;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+        pre {
+            background-color: #f1f2f6;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .feature {
+            background-color: #e8f4fc;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>serio</h1>
+        <p>Modern, idiomatic Go serial port library</p>
+        <p>Effortless, context-aware, stream-friendly serial communication</p>
+        
+        <div class="badges">
+            <a href="https://github.com/hawkli-1994/serio/actions/workflows/go.yml"><img class="badge" src="https://github.com/hawkli-1994/serio/actions/workflows/go.yml/badge.svg" alt="Go"></a>
+            <a href="https://goreportcard.com/report/github.com/hawkli-1994/serio"><img class="badge" src="https://goreportcard.com/badge/github.com/hawkli-1994/serio" alt="Go Report Card"></a>
+            <a href="https://godoc.org/github.com/hawkli-1994/serio"><img class="badge" src="https://godoc.org/github.com/hawkli-1994/serio?status.svg" alt="GoDoc"></a>
+            <a href="https://github.com/hawkli-1994/serio/blob/main/LICENSE"><img class="badge" src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+        </div>
+    </header>
+
+    <div class="content">
+        <h2>Features</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>io.ReadWriteCloser interface</h3>
+                <p>Use Go's standard IO tools (<code>io.Copy</code>, <code>bufio</code>, etc.)</p>
+            </div>
+            <div class="feature">
+                <h3>Context support</h3>
+                <p>Open, read, write operations support context for timeout/cancel.</p>
+            </div>
+            <div class="feature">
+                <h3>Modern configuration</h3>
+                <p>Easy, readable config with <code>Config</code> struct.</p>
+            </div>
+            <div class="feature">
+                <h3>Cross-platform</h3>
+                <p>Works on Linux, Windows, macOS, ARM.</p>
+            </div>
+            <div class="feature">
+                <h3>Automatic resource management</h3>
+                <p>Safe, defer-friendly resource handling.</p>
+            </div>
+            <div class="feature">
+                <h3>Timeout control</h3>
+                <p>Granular control over read/write timeouts with <code>SetWriteTimeout</code> and <code>SetDeadline</code>.</p>
+            </div>
+        </div>
+
+        <h2>Quick Start</h2>
+        <pre><code>go get github.com/hawkli-1994/serio</code></pre>
+
+        <pre><code>package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "time"
+
+    "github.com/hawkli-1994/serio"
+)
+
+func main() {
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancel()
+
+    port, err := serio.Open(ctx, serio.Config{
+        Name:     "/dev/ttyUSB0",
+        Baud:     115200,
+        DataBits: 8,
+        StopBits: 1,
+        Parity:   serio.None,
+        Timeout:  time.Second * 2,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer port.Close()
+
+    _, err = port.Write([]byte("hello serial!"))
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    buf := make([]byte, 128)
+    n, err := port.Read(buf)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Received: %s\n", buf[:n])
+}</code></pre>
+
+        <h2>Documentation</h2>
+        <ul>
+            <li><a href="https://github.com/hawkli-1994/serio/blob/main/README.md">README</a></li>
+            <li><a href="https://github.com/hawkli-1994/serio/blob/main/docs/api.md">API Reference</a></li>
+            <li><a href="https://github.com/hawkli-1994/serio/blob/main/example/main.go">Example</a></li>
+        </ul>
+
+        <h2>License</h2>
+        <p>This project is licensed under the MIT License - see the <a href="https://github.com/hawkli-1994/serio/blob/main/LICENSE">LICENSE</a> file for details.</p>
+    </div>
+</body>
+</html>
